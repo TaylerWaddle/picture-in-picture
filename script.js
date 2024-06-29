@@ -1,5 +1,6 @@
 const videoElement = document.getElementById("video");
-const button = document.getElementById("button");
+const startButton = document.getElementById("startButton");
+const playButton = document.getElementById("playButton");
 
 // Prompt to Select media stream, pass to video element, then play
 async function selectMediaStream() {
@@ -9,6 +10,7 @@ async function selectMediaStream() {
     videoElement.onloadedmetadata = () => {
       videoElement.play();
     };
+    startButton.disabled = true;
   } catch (error) {
     if (error instanceof ReferenceError) {
       console.log("hello", error);
@@ -18,13 +20,8 @@ async function selectMediaStream() {
   }
 }
 
-button.addEventListener("click", async () => {
-  // Disable button
-  button.disabled = true;
-  // Start Picture in Picture
-  await videoElement.requestPictureInPicture();
-  // Reset Button
-  button.disabled = false;
-});
+startButton.addEventListener("click", selectMediaStream);
 
-selectMediaStream();
+playButton.addEventListener("click", async () => {
+  await videoElement.requestPictureInPicture();
+});
